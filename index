@@ -28,3 +28,4 @@
     </table>
   {{ template "Footer" }}
 {{ end }}
+multiple-value regexp.MatchString() in single-value context git
