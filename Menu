@@ -1,32 +1,30 @@
-func word_wrap(s string, limit int) string {
+func findMonthAndDay(yearDay int32) (int32, int32) {
+    year := time.Now().Year()
+    isLeapYear := year%400 == 0 || year%4 == 0 && year%100 != 0 // Calculates if current year is leapyear
 
-         if strings.TrimSpace(s) == "" {
-                 return s
-         }
+    // Determines which array to send to for loop
+    var monthsOfYear [12]int32
+    if isLeapYear {
+        monthsOfYear = [12]int32{31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+    } else {
+        monthsOfYear = [12]int32{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+    }
 
-         // convert string to slice
-         strSlice := strings.Fields(s)
+    var currentMonth int32
+    var currentDayInMonth int32
 
-         var result string = ""
+    // Loop through array of months
+    for i := range monthsOfYear {
+        // If yearDay - next month #OfDays positive, not correct month
+        if yearDay-monthsOfYear[i] > 0 {
+            // Subtract month #OfDays and continue
+            yearDay = yearDay - monthsOfYear[i]
 
-         for len(strSlice) >= 1 {
-                 // convert slice/array back to string
-                 // but insert \r\n at specified limit
-
-                 result = result + strings.Join(strSlice[:limit], " ") + "\r\n"
-
-                 // discard the elements that were copied over to result
-                 strSlice = strSlice[limit:]
-
-                 // change the limit
-                 // to cater for the last few words in
-                 //
-                 if len(strSlice) < limit {
-                         limit = len(strSlice)
-                 }
-
-         }
-
-         return result
-
- }
+        } else {
+            currentMonth = int32(i + 1) // Month found (+1 due to index at 0)
+            currentDayInMonth = yearDay // Remainder of YearDay is day in month
+            break
+        }
+    }
+    return currentMonth, currentDayInMonth
+}
