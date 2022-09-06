@@ -1,4 +1,30 @@
-{{ define "Menu" }}
-<a href="/">HOME</a> | 
-<a href="/new">NEW</a>
-{{ end }}
+package main
+
+import "fmt"
+
+func main(){
+    fmt.Print("  X")    
+    i := 0
+    iz := 0
+    /*     For loop as a Go's While     */
+    for {
+        if(i > 5){
+            fmt.Print("\n")
+            break;
+            }
+           fmt.Print(" ", i , " ")
+        i++  
+    } 
+    
+    for {
+        if(iz > 5){
+            break;
+        } 
+        fmt.Println(" ", iz, iz*0,"",iz*1,"",iz*2,"",iz*3,"",iz*4,"",iz*5)       
+        iz++
+        
+    }
+   
+    
+    
+}
