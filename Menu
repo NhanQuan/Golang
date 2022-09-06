@@ -2,34 +2,23 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
+    "os"
 )
 
 func main() {
-	// WHY ADDING OUR OWN TYPES IS IMPORTANT?
-	//
-	// 1. Type-Safety
-	// 2. Increased Readability
-	// 3. Adding Methods to our Types
-	type (
-		Feet   float64
-		Meters float64
-	)
+    user := os.Args[1]
+    password := os.Args[2]
 
-	var (
-		feet   Feet
-		meters Meters
-	)
-
-	arg := os.Args[1]
-
-	// feet is a Feet value now
-	val, _ := strconv.ParseFloat(arg, 64)
-	feet = Feet(val)
-
-	// meters is a Meters value now
-	meters = Meters(feet * 0.3048)
-
-	fmt.Printf("%g feet is %g meters.\n", feet, meters)
+    user_check := "A"
+    password_check := "123456"
+    
+    if user == user_check {
+        if password == password_check {
+            fmt.Println("Access granted to", user)
+        } else {
+            fmt.Println("Invalid password for ", user) 
+        }          
+    } else {
+        fmt.Println("Access denied for", user)
+    }
 }
