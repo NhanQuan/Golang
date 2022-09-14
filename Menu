@@ -1,46 +1,26 @@
-package model
+<html>
+<head>
+	<title>User info</title>
+</head>
+<body>
 
-import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"os"
-)
+{{range .Users}}
+<div><h3> ID:{{ .Id }} </h3></div>
+<div> First Name:{{ .FirstName }}</div>
+<div> Last Name:{{ .LastName }} </div>
+<div> Balance:{{ .Balance }}</div>
+{{end}}
 
-func checkError(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
-}
+<h1>Options</h1>
+<form action="/addnewuser/">
+    <button type="submit">Add new user</button>
+</form>
+<form action="/deleteuser/">
+    <button type="submit">Delete user</button>
+</form>
+<form action="/showuser/">
+    <button type="submit">Show user</button>
+</form>
 
-func IsValueInSlice(slice []int, value int) (result bool) {
-	for _, n := range slice {
-		if n == value {
-			return true
-		}
-
-	}
-	return false
-
-}
-
-type User struct {
-	Id        int     `json:"id"`
-	FirstName string  `json:"firstName"`
-	LastName  string  `json:"lastName"`
-	Balance   float64 `json:"balance"`
-}
-
-type AllUsers struct {
-	Users []*User
-}
-
-func ShowAllUsers() (au *AllUsers) {
-	file, err := os.OpenFile("list.json", os.O_RDWR|os.O_APPEND, 0666)
-	checkError(err)
-	b, err := ioutil.ReadAll(file)
-	var alUsrs AllUsers
-	json.Unmarshal(b, &alUsrs.Users)
-	checkError(err)
-	return &alUsrs
-}
+</body>
+</html>
