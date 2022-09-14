@@ -3,9 +3,9 @@
 	<title>User info</title>
 </head>
 <body>
-	<div>Done</div><br><br>
-	<form action="/">
-		<button type="submit">Back to main</button>
-	</form>
+<div>There is no user with such ID</div><br><br>
+<form action="/">
+    <button type="submit">Back to main</button>
+</form>
 </body>
 </html>
