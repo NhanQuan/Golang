@@ -1,13 +1,11 @@
 <html>
 <head>
-	<title>Delete user</title>
+	<title>User info</title>
 </head>
 <body>
-<h2>Please,write an id of user you want to delete</h2>
-        <form method="POST" action="deleted">
-            <label>Enter id</label><br>
-            <input type="text" name="id" /><br><br>
-            <input type="submit" value="Submit" />
-        </form>
+	<div>Done</div><br><br>
+	<form action="/">
+		<button type="submit">Back to main</button>
+	</form>
 </body>
 </html>
