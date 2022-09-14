@@ -1,30 +1,24 @@
-func findMonthAndDay(yearDay int32) (int32, int32) {
-    year := time.Now().Year()
-    isLeapYear := year%400 == 0 || year%4 == 0 && year%100 != 0 // Calculates if current year is leapyear
+package main
 
-    // Determines which array to send to for loop
-    var monthsOfYear [12]int32
-    if isLeapYear {
-        monthsOfYear = [12]int32{31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
-    } else {
-        monthsOfYear = [12]int32{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
-    }
+import (
+	handlers "./handlers"
+	"net/http"
+)
 
-    var currentMonth int32
-    var currentDayInMonth int32
+func main() {
+	http.HandleFunc("/addnewuser/", handlers.AddNewUserFunc)
+	http.HandleFunc("/notsucceded", handlers.NotSucceded)
 
-    // Loop through array of months
-    for i := range monthsOfYear {
-        // If yearDay - next month #OfDays positive, not correct month
-        if yearDay-monthsOfYear[i] > 0 {
-            // Subtract month #OfDays and continue
-            yearDay = yearDay - monthsOfYear[i]
+	http.HandleFunc("/deleted", handlers.DeletedFunc)
+	http.HandleFunc("/deleteuser/deleted", handlers.DeleteUserFunc)
+	http.HandleFunc("/deleteuser/", handlers.DeleteUserServe)
+	http.HandleFunc("/deleteuser/notsuccededdelete", handlers.NotSuccededDelete)
 
-        } else {
-            currentMonth = int32(i + 1) // Month found (+1 due to index at 0)
-            currentDayInMonth = yearDay // Remainder of YearDay is day in month
-            break
-        }
-    }
-    return currentMonth, currentDayInMonth
+	http.HandleFunc("/", handlers.IndexFunc)
+
+	http.HandleFunc("/showuser/show", handlers.ShowUserFunc)
+	http.HandleFunc("/showuser/", handlers.ShowUser)
+	http.HandleFunc("/showuser/notsuccededshow/", handlers.NotSuccededShow)
+
+	http.ListenAndServe(":8080", nil)
 }
