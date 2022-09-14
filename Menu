@@ -1,17 +1,42 @@
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+//function to delete user
+func DeleteUserFunc(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("templates/deleteUser.html")
+		t.Execute(w, nil)
+	} else {
+		r.ParseForm()
+		id, err := strconv.Atoi(r.FormValue("id"))
+		checkError(err)
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+		//open file with users
+		file, err := os.OpenFile("list.json", os.O_RDWR|os.O_APPEND, 0666)
+		defer file.Close()
 
-tr:nth-child(even) {
-  background-color: #dddddd;
+		//read file and unmarshall json to []users
+		b, err := ioutil.ReadAll(file)
+		var alUsrs model.AllUsers
+		err = json.Unmarshal(b, &alUsrs.Users)
+		checkError(err)
+
+		var allID []int
+		for _, usr := range alUsrs.Users {
+			allID = append(allID, usr.Id)
+		}
+		for i, usr := range alUsrs.Users {
+			if model.IsValueInSlice(allID, id) != true {
+				http.Redirect(w, r, "/deleteuser/notsuccededdelete", 302)
+				return
+			}
+			if usr.Id != id {
+				continue
+			} else {
+				alUsrs.Users = append(alUsrs.Users[:i], alUsrs.Users[i+1:]...)
+			}
+
+		}
+		newUserBytes, err := json.MarshalIndent(&alUsrs.Users, "", " ")
+		checkError(err)
+		ioutil.WriteFile("list.json", newUserBytes, 0666)
+		http.Redirect(w, r, "/deleted", 301)
+	}
 }
-</style>
