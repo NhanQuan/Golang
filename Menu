@@ -1,26 +1,17 @@
 <html>
 <head>
-	<title>User info</title>
+	<title>Adding new user</title>
 </head>
 <body>
-
-{{range .Users}}
-<div><h3> ID:{{ .Id }} </h3></div>
-<div> First Name:{{ .FirstName }}</div>
-<div> Last Name:{{ .LastName }} </div>
-<div> Balance:{{ .Balance }}</div>
-{{end}}
-
-<h1>Options</h1>
-<form action="/addnewuser/">
-    <button type="submit">Add new user</button>
-</form>
-<form action="/deleteuser/">
-    <button type="submit">Delete user</button>
-</form>
-<form action="/showuser/">
-    <button type="submit">Show user</button>
-</form>
-
+<h2>New user's data</h2>
+        <form method="POST" action="useraded">
+            <label>Enter firstname</label><br>
+            <input type="text" name="firstname" /><br><br>
+			<label>Enter lastname</label><br>
+            <input type="text" name="lastname" /><br><br>
+            <label>Enter balance</label><br>
+            <input type="number" name="balance" /><br><br>
+            <input type="submit" value="Submit" />
+        </form>
 </body>
 </html>
