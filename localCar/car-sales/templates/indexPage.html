@@ -1,0 +1,48 @@
+<html>
+<head>
+	<title>Cars Sales info</title>
+</head>
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .no {
+        counter-increment: rowNumber;
+    }
+
+    .no td:first-child::before {
+        content: counter(rowNumber);
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+<body>
+<table>
+    <tr style = "background-color:#4877a7">
+        <th>No</th>
+        <th>Continent</th>
+        <th>Company</th>
+        <th>Sales</th>
+    </tr>
+    {{range .CarSales}}
+    <tr class="no">
+        <td></td>
+        <td>{{ .Continent }}</td>
+        <td>{{ .Company }}</td>
+        <td>{{ .Sales }}</td>
+    </tr>
+    {{end}}
+  </table>
+</body>
+</html>
