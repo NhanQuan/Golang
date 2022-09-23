@@ -1,89 +1,27 @@
-{{ define "Index" }}
-  {{ template "Header" }}
-    {{ template "Menu"  }}
-    <h2> Registered </h2>
-    <table border="1">
-      <thead>
-      <tr>
-        <td>ID</td>
-        <td>Name</td>
-        <td>City</td>
-        <td>View</td>
-        <td>Edit</td>
-        <td>Delete</td>
-      </tr>
-       </thead>
-       <tbody>
-    {{ range . }}
-      <tr>
-        <td>{{ .Id }}</td>
-        <td> {{ .Name }} </td>
-        <td>{{ .City }} </td> 
-        <td><a href="/show?id={{ .Id }}">View</a></td>
-        <td><a href="/edit?id={{ .Id }}">Edit</a></td>
-        <td><a href="/delete?id={{ .Id }}">Delete</a><td>
-      </tr>
-    {{ end }}
-       </tbody>
-    </table>
-  {{ template "Footer" }}
-{{ end }}
-multiple-value regexp.MatchString() in single-value context git
-// Golang program to show how
-// to use command-line arguments
-package main
-
-import (
-	"fmt"
-	"os"
-)
-
-func main() {
-
-	// The first argument
-	// is always program name
-	myProgramName := os.Args[0]
-
-	// this will take 4
-	// command line arguments
-	cmdArgs := os.Args[4]
-
-	// getting the arguments
-	// with normal indexing
-	gettingArgs := os.Args[2]
-
-	toGetAllArgs := os.Args[1:]
-
-	// it will display
-	// the program name
-	fmt.Println(myProgramName)
-	
-	fmt.Println(cmdArgs)
-	
-	fmt.Println(gettingArgs)
-	
-	fmt.Println(toGetAllArgs)
+// Info from config file
+type Config struct {
+	Baseurl   string
+	Title     string
+	Templates string
+	Posts     string
+	Public    string
+	Admin     string
+	Metadata  string
+	Index     string
 }
-package main
-import ("fmt")
 
-func main() {
-  day := 4
+// Reads info from config file
+func ReadConfig() Config {
+	var configfile = flags.Configfile
+	_, err := os.Stat(configfile)
+	if err != nil {
+		log.Fatal("Config file is missing: ", configfile)
+	}
 
-  switch day {
-  case 1:
-    fmt.Println("Monday")
-  case 2:
-    fmt.Println("Tuesday")
-  case 3:
-    fmt.Println("Wednesday")
-  case 4:
-    fmt.Println("Thursday")
-  case 5:
-    fmt.Println("Friday")
-  case 6:
-    fmt.Println("Saturday")
-  case 7:
-    fmt.Println("Sunday")
-  }
+	var config Config
+	if _, err := toml.DecodeFile(configfile, &config); err != nil {
+		log.Fatal(err)
+	}
+	//log.Print(config.Index)
+	return config
 }
