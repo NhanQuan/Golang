@@ -1,27 +1,37 @@
- var paddingHeight = 40;
-        var rowHeight = data.getNumberOfRows() * 50;
-        var chartHeight = rowHeight + paddingHeight;
+<html>
+ <head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['gauge']});
+    google.charts.setOnLoadCallback(drawGauge);
 
-        var options = {
-            titlePosition: 'none',
-            width: 1400,
+    var gaugeOptions = {min: 0, max: 280, yellowFrom: 200, yellowTo: 250,
+      redFrom: 250, redTo: 280, minorTicks: 5};
+    var gauge;
 
-            height: chartHeight,
-            chartArea: {
-              height: rowHeight,
-            },
+    function drawGauge() {
+      gaugeData = new google.visualization.DataTable();
+      gaugeData.addColumn('number', 'Engine');
+      gaugeData.addColumn('number', 'Torpedo');
+      gaugeData.addRows(2);
+      gaugeData.setCell(0, 0, 120);
+      gaugeData.setCell(0, 1, 80);
 
-            legend: { position: 'top', maxLines: 3 },
-            bar: { groupWidth: '50%' },
-            isStacked: true,
-            hAxis: {
-                title: 'Business Hours (excluding weekends & holidays)'
-            },
-            colors: ['#0066ff', '#33cc33', '#ffcc00', '#ff0000'],
-            annotations: {
-                alwaysOutside: true,
-                textStyle: {
-                    color: '#000000'
-                }
-            }
-        }
+      gauge = new google.visualization.Gauge(document.getElementById('gauge_div'));
+      gauge.draw(gaugeData, gaugeOptions);
+    }
+
+    function changeTemp(dir) {
+      gaugeData.setValue(0, 0, gaugeData.getValue(0, 0) + dir * 25);
+      gaugeData.setValue(0, 1, gaugeData.getValue(0, 1) + dir * 20);
+      gauge.draw(gaugeData, gaugeOptions);
+    }
+  </script>
+ </head>
+ <body>
+  <div id="gauge_div" style="width:280px; height: 140px;"></div>
+  <input type="button" value="Go Faster" onclick="changeTemp(1)" />
+  <input type="button" value="Slow down" onclick="changeTemp(-1)" />
+ </body>
+</html>
+
