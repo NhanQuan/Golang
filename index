@@ -1,22 +1,27 @@
-<script>
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
+ var paddingHeight = 40;
+        var rowHeight = data.getNumberOfRows() * 50;
+        var chartHeight = rowHeight + paddingHeight;
 
-function drawChart() {
-var data = google.visualization.arrayToDataTable([
-  ['Contry', 'Mhl'],
-  ['Italy',55],
-  ['France',49],
-  ['Spain',44],
-  ['USA',24],
-  ['Argentina',15]
-]);
+        var options = {
+            titlePosition: 'none',
+            width: 1400,
 
-var options = {
-  title:'World Wide Wine Production'
-};
+            height: chartHeight,
+            chartArea: {
+              height: rowHeight,
+            },
 
-var chart = new google.visualization.BarChart(document.getElementById('myChart'));
-  chart.draw(data, options);
-}
-</script>
+            legend: { position: 'top', maxLines: 3 },
+            bar: { groupWidth: '50%' },
+            isStacked: true,
+            hAxis: {
+                title: 'Business Hours (excluding weekends & holidays)'
+            },
+            colors: ['#0066ff', '#33cc33', '#ffcc00', '#ff0000'],
+            annotations: {
+                alwaysOutside: true,
+                textStyle: {
+                    color: '#000000'
+                }
+            }
+        }
