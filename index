@@ -1,50 +1,11 @@
-google.charts.load('current', {
-  callback: drawBasic,
-  packages: ['corechart']
-});
-
-function drawBasic() {
-  var data = google.visualization.arrayToDataTable([
-    ['City', '2010 Population',],
-    ['New York City, NY', 8175000],
-    ['Los Angeles, CA', 3792000],
-    ['Chicago, IL', 2695000],
-    ['Houston, TX', 2099000],
-    ['Philadelphia, PA', 1526000]
-  ]);
-
-  var groupData = google.visualization.data.group(
-    data,
-    [{column: 0, modifier: function () {return 'total'}, type:'string'}],
-    [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
-  );
-
-  var formatPercent = new google.visualization.NumberFormat({
-    pattern: '#,##0.0%'
-  });
-
-  var formatShort = new google.visualization.NumberFormat({
-    pattern: 'short'
-  });
-
-  var view = new google.visualization.DataView(data);
-  view.setColumns([0, 1, {
-    calc: function (dt, row) {
-      var amount =  formatShort.formatValue(dt.getValue(row, 1));
-      var percent = formatPercent.formatValue(dt.getValue(row, 1) / groupData.getValue(0, 1));
-      return amount + ' (' + percent + ')';
-    },
-    type: 'string',
-    role: 'annotation'
-  }]);
-
-  var options = {
-    annotations: {
-      alwaysOutside: true
-    },
-    title: 'Population of Largest U.S. Cities',
-    chartArea: {width: '50%'},
-  };
-  var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-  chart.draw(view, options);
+.google-visualization-tooltip {
+border: solid 1px #bdbdbd;
+border-radius: 2px;
+background-color: white;
+position: absolute;
+box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.6);
+font-size: 11px;
+-moz-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.6);
+-webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.6);
+font-family: arial;
 }
