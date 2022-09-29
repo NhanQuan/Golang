@@ -1,27 +1,50 @@
-  var paddingHeight = 40;
-        var rowHeight = data.getNumberOfRows() * 50;
-        var chartHeight = rowHeight + paddingHeight;
+google.charts.load('current', {
+  callback: drawBasic,
+  packages: ['corechart']
+});
 
-        var options = {
-            titlePosition: 'none',
-            width: 1400,
+function drawBasic() {
+  var data = google.visualization.arrayToDataTable([
+    ['City', '2010 Population',],
+    ['New York City, NY', 8175000],
+    ['Los Angeles, CA', 3792000],
+    ['Chicago, IL', 2695000],
+    ['Houston, TX', 2099000],
+    ['Philadelphia, PA', 1526000]
+  ]);
 
-            height: chartHeight,
-            chartArea: {
-              height: rowHeight,
-            },
+  var groupData = google.visualization.data.group(
+    data,
+    [{column: 0, modifier: function () {return 'total'}, type:'string'}],
+    [{column: 1, aggregation: google.visualization.data.sum, type: 'number'}]
+  );
 
-            legend: { position: 'top', maxLines: 3 },
-            bar: { groupWidth: '50%' },
-            isStacked: true,
-            hAxis: {
-                title: 'Business Hours (excluding weekends & holidays)'
-            },
-            colors: ['#0066ff', '#33cc33', '#ffcc00', '#ff0000'],
-            annotations: {
-                alwaysOutside: true,
-                textStyle: {
-                    color: '#000000'
-                }
-            }
-        }
+  var formatPercent = new google.visualization.NumberFormat({
+    pattern: '#,##0.0%'
+  });
+
+  var formatShort = new google.visualization.NumberFormat({
+    pattern: 'short'
+  });
+
+  var view = new google.visualization.DataView(data);
+  view.setColumns([0, 1, {
+    calc: function (dt, row) {
+      var amount =  formatShort.formatValue(dt.getValue(row, 1));
+      var percent = formatPercent.formatValue(dt.getValue(row, 1) / groupData.getValue(0, 1));
+      return amount + ' (' + percent + ')';
+    },
+    type: 'string',
+    role: 'annotation'
+  }]);
+
+  var options = {
+    annotations: {
+      alwaysOutside: true
+    },
+    title: 'Population of Largest U.S. Cities',
+    chartArea: {width: '50%'},
+  };
+  var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+  chart.draw(view, options);
+}
