@@ -1,0 +1,47 @@
+<html>
+<head>
+	<title>Result Search Cars Sales</title>
+</head>
+<style>
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 50%;
+		margin: auto
+	}
+
+	.serial {
+		counter-increment: rowNumber;
+	}
+
+	.serial td:first-child::before {
+		content: counter(rowNumber);
+	}
+
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+	}
+
+	tr:nth-child(even) {
+		background-color: #dddddd;
+	}
+</style>
+<body>
+<table>
+	<tr style="background-color:#4877a7">
+		<th>No</th>
+		<th>Company</th>
+		<th>Total Sales</th>
+	</tr>
+
+	{{range .CarSales}}
+		<tr class="serial">
+			<td></td>
+			<td><a href="/sales/detailCarSales?company={{ .Company }}">{{ .Company }}</a></td>
+			<td>{{ salesFormat .Sales }}</td>
+		</tr>
+	{{end}}
+</body>
+</html>

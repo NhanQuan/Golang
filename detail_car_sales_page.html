@@ -1,0 +1,119 @@
+<html>
+<head>
+<style>
+	.serial {
+		counter-increment: rowNumber;
+	}
+
+	.serial td:first-child::before {
+		content: counter(rowNumber);
+	}
+
+	.google-visualization-tooltip {
+		width: 120px;
+		margin-top: 20px;
+		margin-left: 50px;
+}
+</style>
+
+</head>
+<body>
+<table align="center">
+	<tr style="background-color:#4877a7">
+		<th>No</th>
+		<th>Continent</th>
+		<th>Sales</th>
+		<th style="width:100px"></th>
+	</tr>
+
+	{{range .CarSales}}
+		<tr class="serial">
+			<td></td>
+			<td>{{ .Continent }}</td>
+			<td>{{ salesFormat .Sales }}</td>
+			<td rowspan="0" id="chart_car_sales"></td>
+		</tr>
+	{{end}}
+</table>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+	// vẽ biểu đồ doanh số bán xe của công ty ở các nước
+	google.charts.load('current', {
+		callback: chartCarSales,
+		packages: ['corechart']
+	});
+	// biểu đồ hiện thị doanh số chi tiết của công ty ở các nước
+	function chartCarSales() {
+		var data = new google.visualization.arrayToDataTable([
+		['', '', ''],
+		{{range .CarSales}}
+			[{{.Company}}, {{.Sales}}, {{.Continent}}],
+		{{end}}
+		]);
+
+		// nhóm dữ liệu theo định dạng show view
+		var groupData = google.visualization.data.group(
+			data,
+			[{column: 0, modifier: function () {return }, type:'string'}],
+			[{column: 1, aggregation: google.visualization.data.sum, type: 'number'}],
+			[{column: 2, modifier: function () {return ''}, type:'string'}]
+		);
+
+		// định dạng phần trăm
+		var formatPercent = new google.visualization.NumberFormat({
+			pattern: '#,##0.0%'
+		});
+
+		// định đạng sales
+		var formatSale = new google.visualization.NumberFormat({
+			pattern: '#,###'
+		});
+
+		// custom dữ liệu hiển thị ra view
+		var view = new google.visualization.DataView(data);
+		view.setColumns([0, 1, {
+			calc: function (data, row) {
+				var company = data.getValue(0, 0)
+				var continent = data.getValue(row, 2)
+				var sales = data.getValue(row, 1);
+				var percentCarSales = formatPercent.formatValue(data.getValue(row, 1) / groupData.getValue(0, 1));
+				return tooltipDetailCarSales(company, continent, formatSale.formatValue(sales), percentCarSales)
+			},
+			type: 'string',
+			role: 'tooltip'
+		}]);
+
+		// custom giao diện chart
+		var options = {
+			legend: {
+				position: 'none'
+			},
+			colors: ['red'],
+			hAxis: {
+				gridlines: {'color': 'white'}
+			},
+			chartArea: {
+				left: 0,
+				height: '100%',
+			},
+			tooltip: {
+				textStyle: {
+					bold:true
+				},
+				isHtml: true
+			}
+		}
+		// vẽ biểu đồ bartchart doanh số bán xe của công ty
+		var chart = new google.visualization.BarChart(document.getElementById('chart_car_sales'));
+		chart.draw(view, options);
+	}
+	// show tooltip
+	function tooltipDetailCarSales(company, continent, sales, percent) {
+		return 'Company: ' + company + '\n' +
+			'Continent: ' + continent + '\n' +
+			'Sales: ' + sales + '\n' +
+			'Ratio: ' + percent;
+	}
+</script>
+</body>
+</html>
