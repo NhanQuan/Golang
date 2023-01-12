@@ -4,3 +4,14 @@
 {{ end }}
 ジャンル構成比売上推移
 hhjkshdfjsdlkfjsdlkj
+const encodeGetParams = p => 
+  Object.entries(p).map(kv => kv.map(encodeURIComponent).join("=")).join("&");
+
+const params = {
+  user: "María Rodríguez",
+  awesome: true,
+  awesomeness: 64,
+  "ZOMG+&=*(": "*^%*GMOZ"
+};
+
+console.log("https://example.com/endpoint?" + encodeGetParams(params))
