@@ -16,4 +16,4 @@ In [23]: from urllib.parse import urlencode
 In [24]: encoded = urlencode(dict(p=query,val=val))
 
 In [25]: print(f"http://example.com?{encoded}")
-http://example.com?p=lskdfj%2Fsdfkjdf%2Fksdfj+skfj&val=34
+return ("{:,}".format(number))
