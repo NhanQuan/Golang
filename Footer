@@ -17,4 +17,4 @@ In [24]: encoded = urlencode(dict(p=query,val=val))
 
 In [25]: print(f"http://example.com?{encoded}")
 return ("{:,}".format(number))
-フロントでの商品検索画面の動作確認
+
